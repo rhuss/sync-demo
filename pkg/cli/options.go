@@ -1,4 +1,6 @@
 package cli
 
 // Options for all commands.
-type Options struct{}
+type Options struct {
+	ConfigPath string
+}
