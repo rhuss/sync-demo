@@ -1,11 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"os"
 
-	"github.com/cardil/deviate/pkg/metadata"
+	"github.com/cardil/deviate/internal/cmd"
+)
+
+var (
+	exitFunc = os.Exit    //nolint:gochecknoglobals
+	opts     []cmd.Option //nolint:gochecknoglobals
 )
 
 func main() {
-	fmt.Println("Version: ", metadata.Version) //nolint:forbidigo
+	exitFunc(cmd.Main(opts...))
 }

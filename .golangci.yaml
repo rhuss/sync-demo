@@ -31,3 +31,10 @@ issues:
     - path: _test\.go
       linters:
         - wrapcheck
+        - varnamelen
+
+linters-settings:
+  varnamelen:
+    max-distance: 16
+    min-name-length: 2
+
