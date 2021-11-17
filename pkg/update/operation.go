@@ -1,8 +1,13 @@
 package update
 
 import (
+	"errors"
+
 	"github.com/cardil/deviate/pkg/state"
 )
+
+// ErrUpdateFailed when the update failed.
+var ErrUpdateFailed = errors.New("update failed")
 
 // Operation performs update - the upstream synchronization.
 type Operation struct {
@@ -12,10 +17,7 @@ type Operation struct {
 func (o Operation) Run() error {
 	steps := []step{
 		o.mirrorBranches,
-		o.resetReleaseNext,
-		o.removeGithubWorkflows,
-		o.addForkFiles,
-		o.applyPatches,
+		o.updateReleaseNext,
 		o.triggerCI,
 		o.createPR,
 	}

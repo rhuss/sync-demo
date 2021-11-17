@@ -1,9 +1,11 @@
 package config
 
+import "github.com/cardil/deviate/pkg/config/git"
+
 // New creates a new default configuration.
-func New(project Projectlike) (Config, error) {
+func New(project Project, informer git.RemoteURLInformer) (Config, error) {
 	c := newDefaults()
-	err := c.load(project)
+	err := c.load(project, informer)
 	if err != nil {
 		return Config{}, err
 	}
@@ -12,15 +14,4 @@ func New(project Projectlike) (Config, error) {
 		return Config{}, err
 	}
 	return c, nil
-}
-
-// newDefaults creates a new default configuration.
-func newDefaults() Config {
-	return Config{
-		Branches: Branches{
-			Main:            "main",
-			ReleaseNext:     "release-next",
-			ReleaseTemplate: "release-{{ .version.major }}-{{ .version.minor}}",
-		},
-	}
 }

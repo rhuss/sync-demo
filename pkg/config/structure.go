@@ -13,4 +13,11 @@ type Branches struct {
 	Main            string `valid:"required"`
 	ReleaseNext     string `valid:"required"`
 	ReleaseTemplate string `valid:"required"`
+	Searches
+}
+
+// Searches contains regular expressions used to search for branches.
+type Searches struct {
+	UpstreamReleases   string `valid:"required"`
+	DownstreamReleases string `valid:"required"`
 }
