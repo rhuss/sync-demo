@@ -1,15 +1,18 @@
 package update
 
 import (
+	"bytes"
 	"fmt"
 	"regexp"
+	"text/template"
 
+	"github.com/cardil/deviate/pkg/config/git"
 	"github.com/cardil/deviate/pkg/errors"
-	"github.com/wavesoftware/go-magetasks/pkg/output/color"
+	"github.com/cardil/deviate/pkg/log/color"
 )
 
-func (o Operation) mirrorBranches() error {
-	o.Println(">>> Check if there's an upstream release we need " +
+func (o Operation) mirrorReleases() error {
+	o.Println("Check if there's an upstream release we need " +
 		"to mirror downstream")
 
 	missing, err := o.findMissingDownstreamReleases()
@@ -17,7 +20,7 @@ func (o Operation) mirrorBranches() error {
 		return err
 	}
 	if len(missing) > 0 {
-		o.Printf(">> Found missing releases: %s\n", color.Blue(fmt.Sprintf("%+q", missing)))
+		o.Printf("Found missing releases: %s\n", color.Blue(fmt.Sprintf("%+q", missing)))
 		for _, rel := range missing {
 			err = o.mirrorRelease(rel)
 			if err != nil {
@@ -25,17 +28,30 @@ func (o Operation) mirrorBranches() error {
 			}
 		}
 	} else {
-		o.Println(">> No missing releases found")
+		o.Println("No missing releases found")
 	}
 	return nil
 }
 
 type release struct {
-	major, minor string
+	Major, Minor string
 }
 
 func (r release) String() string {
-	return r.major + "." + r.minor
+	return r.Major + "." + r.Minor
+}
+
+func (r release) Name(tpl string) (string, error) {
+	eng, err := template.New("release").Parse(tpl)
+	if err != nil {
+		return "", errors.Wrap(err, ErrUpdateFailed)
+	}
+	var buff bytes.Buffer
+	err = eng.Execute(&buff, r)
+	if err != nil {
+		return "", errors.Wrap(err, ErrUpdateFailed)
+	}
+	return buff.String(), nil
 }
 
 func (o Operation) findMissingDownstreamReleases() ([]release, error) {
@@ -75,7 +91,7 @@ func (o Operation) listReleases(upstream bool) ([]release, error) {
 		re = regexp.MustCompile(o.Config.Branches.Searches.UpstreamReleases)
 	}
 
-	refs, err := o.Repository.ListRemote(url)
+	refs, err := o.Repository.ListRemote(git.Remote{Name: "origin", URL: url})
 	if err != nil {
 		return nil, errors.Wrap(err, ErrUpdateFailed)
 	}

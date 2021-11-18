@@ -14,11 +14,14 @@ var (
 	ErrNotGitRepo = errors.New("not a git repository")
 
 	// ErrRemoteOperationFailed when remote git repository operation failed.
-	ErrRemoteOperationFailed = errors.New("remote operation failed")
+	ErrRemoteOperationFailed = errors.New("remote git operation failed")
+
+	// ErrLocalOperationFailed when local git repository operation failed.
+	ErrLocalOperationFailed = errors.New("local git operation failed")
 )
 
-// New creates a new Project from regular config.Project.
-func New(project config.Project, state state.State) (Project, error) {
+// NewProject creates a new Project from regular config.Project.
+func NewProject(project config.Project, state state.State) (Project, error) {
 	r, err := gitv5.PlainOpen(project.Path)
 	if err != nil {
 		return Project{}, fmt.Errorf("%s - %w: %v", project.Path, ErrNotGitRepo, err)

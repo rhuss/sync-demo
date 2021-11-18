@@ -2,14 +2,21 @@ package config
 
 // newDefaults creates a new default configuration.
 func newDefaults() Config {
+	const (
+		releaseTemplate = "release-{{ .Major }}.{{ .Minor }}"
+		releaseSearch   = `release-(\d+)\.(\d+)`
+	)
 	return Config{
 		Branches: Branches{
-			Main:            "main",
-			ReleaseNext:     "release-next",
-			ReleaseTemplate: "release-{{ .Version.Major }}-{{ .Version.Minor }}",
+			Main:        "main",
+			ReleaseNext: "release-next",
+			ReleaseTemplates: ReleaseTemplates{
+				Upstream:   releaseTemplate,
+				Downstream: releaseTemplate,
+			},
 			Searches: Searches{
-				UpstreamReleases:   `release-(\d+)\.(\d+)`,
-				DownstreamReleases: `release-(\d+)\.(\d+)`,
+				UpstreamReleases:   releaseSearch,
+				DownstreamReleases: releaseSearch,
 			},
 		},
 	}

@@ -1,8 +1,8 @@
 package update
 
 import (
-	"errors"
-
+	"github.com/cardil/deviate/pkg/config/git"
+	"github.com/cardil/deviate/pkg/errors"
 	"github.com/cardil/deviate/pkg/state"
 )
 
@@ -15,19 +15,24 @@ type Operation struct {
 }
 
 func (o Operation) Run() error {
-	steps := []step{
-		o.mirrorBranches,
+	err := runSteps([]step{
+		o.mirrorReleases,
 		o.updateReleaseNext,
 		o.triggerCI,
 		o.createPR,
-	}
-	for _, s := range steps {
-		if err := s(); err != nil {
-			return err
-		}
-	}
-
-	return nil
+	})
+	_ = o.switchToMain()
+	return err
 }
 
-type step func() error
+func (o Operation) switchToMain() error {
+	downstream := git.Remote{Name: "downstream", URL: o.Config.Downstream}
+	err := o.Repository.Fetch(downstream)
+	if err != nil {
+		return errors.Wrap(err, ErrUpdateFailed)
+	}
+	return errors.Wrap(
+		o.Repository.Checkout(downstream, o.Config.Main).As(o.Config.Main),
+		ErrUpdateFailed,
+	)
+}

@@ -15,3 +15,13 @@ func Wrap(err error, wrapper error) error {
 	}
 	return nil
 }
+
+// Is reports whether any error in err's chain matches target.
+func Is(err, target error) bool {
+	return errors.Is(err, target)
+}
+
+// New returns an error that formats as the given text.
+func New(text string) error {
+	return errors.New(text) // nolint:goerr113
+}

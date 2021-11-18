@@ -4,7 +4,7 @@ import "github.com/go-git/go-git/v5/plumbing"
 
 // RemoteLister will list references of a GIT repository remote.
 type RemoteLister interface {
-	ListRemote(url string) ([]*plumbing.Reference, error)
+	ListRemote(remote Remote) ([]*plumbing.Reference, error)
 }
 
 // RemoteURLInformer will return a URL of a remote or error if such remote
@@ -17,4 +17,8 @@ type RemoteURLInformer interface {
 type Repository interface {
 	RemoteLister
 	RemoteURLInformer
+	Fetch(remote Remote) error
+	Checkout(remote Remote, branch string) Checkout
+	PushRelease(branch string) error
+	DeleteBranch(branch string) error
 }

@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/cardil/deviate/pkg/config/git"
+	"github.com/cardil/deviate/pkg/log"
 	"gopkg.in/yaml.v3"
 )
 
@@ -16,7 +17,11 @@ var (
 	ErrConfigFileHaveInvalidFormat = errors.New("config file have invalid format")
 )
 
-func (c *Config) load(project Project, informer git.RemoteURLInformer) error {
+func (c *Config) load(
+	project Project,
+	log log.Logger,
+	informer git.RemoteURLInformer,
+) error {
 	bytes, err := os.ReadFile(project.ConfigPath)
 	if err != nil {
 		return fmt.Errorf("%s - %w: %v", project.ConfigPath,
@@ -28,5 +33,5 @@ func (c *Config) load(project Project, informer git.RemoteURLInformer) error {
 			ErrConfigFileHaveInvalidFormat, err)
 	}
 
-	return c.loadFromGit(informer)
+	return c.loadFromGit(log, informer)
 }

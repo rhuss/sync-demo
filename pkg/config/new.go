@@ -1,11 +1,22 @@
 package config
 
-import "github.com/cardil/deviate/pkg/config/git"
+import (
+	"github.com/cardil/deviate/pkg/config/git"
+	"github.com/cardil/deviate/pkg/log"
+)
 
 // New creates a new default configuration.
-func New(project Project, informer git.RemoteURLInformer) (Config, error) {
+func New(
+	project Project,
+	log log.Logger,
+	informer git.RemoteURLInformer,
+) (Config, error) {
 	c := newDefaults()
-	err := c.load(project, informer)
+	err := c.load(project, log, informer)
+	if err != nil {
+		return Config{}, err
+	}
+	err = c.overrides()
 	if err != nil {
 		return Config{}, err
 	}
