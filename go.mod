@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
+	github.com/cli/cli/v2 v2.2.0
 	github.com/fatih/color v1.13.0
 	github.com/go-git/go-billy/v5 v5.3.1
 	github.com/go-git/go-git/v5 v5.4.2
@@ -26,3 +27,5 @@ require (
 	google.golang.org/genproto v0.0.0-20211116182654-e63d96a377c4 // indirect
 	gopkg.in/ini.v1 v1.64.0 // indirect
 )
+
+replace github.com/shurcooL/graphql => github.com/cli/shurcooL-graphql v0.0.0-20200707151639-0f7232a2bf7e

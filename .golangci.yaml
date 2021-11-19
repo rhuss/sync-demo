@@ -38,3 +38,8 @@ linters-settings:
     max-distance: 16
     min-name-length: 2
 
+  gomoddirectives:
+    # List of allowed `replace` directives. Default is empty.
+    replace-allow-list:
+      # FIXME: until github.com/cli/cli requires forked github.com/cli/shurcooL-graphql
+      - github.com/shurcooL/graphql

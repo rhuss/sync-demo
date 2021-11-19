@@ -14,6 +14,11 @@ func (o Operation) triggerCI() error {
 	return triggerCI{o}.run()
 }
 
+func (o Operation) triggerCIMessage() string {
+	return fmt.Sprintf(":robot: Triggering CI on branch `%s` after synching to `upstream/%s`",
+		o.Config.Branches.ReleaseNext, o.Config.Branches.Main)
+}
+
 type triggerCI struct {
 	Operation
 }
@@ -23,8 +28,7 @@ func (c triggerCI) run() error {
 	return runSteps([]step{
 		c.checkout,
 		c.addChange,
-		c.commitChanges(fmt.Sprintf(":robot: Triggering CI on branch '%s' after synching to upstream/%s",
-			c.Config.Branches.ReleaseNext, c.Config.Branches.Main)),
+		c.commitChanges(c.triggerCIMessage()),
 		c.pushBranch(c.Config.Branches.SynchCI),
 	})
 }
