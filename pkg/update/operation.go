@@ -40,6 +40,14 @@ func (o Operation) switchToMain() error {
 func (o Operation) commitChanges(message string) step {
 	return func() error {
 		o.Println("- Committing changes:", message)
-		return errors.Wrap(o.Repository.CommitChanges(message), ErrUpdateFailed)
+		commit, err := o.Repository.CommitChanges(message)
+		if err != nil {
+			return errors.Wrap(err, ErrUpdateFailed)
+		}
+		stats, err := commit.StatsContext(o.Context)
+		if err == nil {
+			o.Printf("-- Statistics:\n%s\n", stats)
+		}
+		return errors.Wrap(err, ErrUpdateFailed)
 	}
 }

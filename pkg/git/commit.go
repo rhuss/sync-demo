@@ -3,22 +3,30 @@ package git
 import (
 	"github.com/cardil/deviate/pkg/errors"
 	gitv5 "github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
-func (r Repository) CommitChanges(message string) error {
+func (r Repository) CommitChanges(message string) (*object.Commit, error) {
 	wt, err := r.Repository.Worktree()
 	if err != nil {
-		return errors.Wrap(err, ErrLocalOperationFailed)
+		return nil, errors.Wrap(err, ErrLocalOperationFailed)
 	}
 	err = wt.AddWithOptions(&gitv5.AddOptions{
 		All:  true,
 		Path: ".",
 	})
 	if err != nil {
-		return errors.Wrap(err, ErrLocalOperationFailed)
+		return nil, errors.Wrap(err, ErrLocalOperationFailed)
 	}
-	_, err = wt.Commit(message, &gitv5.CommitOptions{
+	var hash plumbing.Hash
+	hash, err = wt.Commit(message, &gitv5.CommitOptions{
 		All: true,
 	})
-	return errors.Wrap(err, ErrLocalOperationFailed)
+	if err != nil {
+		return nil, errors.Wrap(err, ErrLocalOperationFailed)
+	}
+	var commit *object.Commit
+	commit, err = r.CommitObject(hash)
+	return commit, errors.Wrap(err, ErrLocalOperationFailed)
 }

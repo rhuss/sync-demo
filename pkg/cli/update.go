@@ -18,8 +18,10 @@ var ErrConfigurationIsInvalid = errors.New("configuration is invalid")
 // Upgrade will perform upgrade operation.
 func Upgrade(logger log.Logger, projectFactory func() config.Project) error {
 	st := state.New(log.LabeledLogger{
-		Label:  color.Green("[deviate:update]"),
-		Logger: logger,
+		Label: color.Green("[deviate:update]"),
+		Logger: log.TimedLogger{
+			Logger: logger,
+		},
 	})
 	defer st.Close()
 	project, err := git.NewProject(projectFactory(), st)

@@ -1,6 +1,9 @@
 package git
 
-import "github.com/go-git/go-git/v5/plumbing"
+import (
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/object"
+)
 
 // RemoteLister will list references of a GIT repository remote.
 type RemoteLister interface {
@@ -21,5 +24,5 @@ type Repository interface {
 	Checkout(remote Remote, branch string) Checkout
 	Push(remote Remote, branch string) error
 	DeleteBranch(branch string) error
-	CommitChanges(message string) error
+	CommitChanges(message string) (*object.Commit, error)
 }
