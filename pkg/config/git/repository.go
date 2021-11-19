@@ -19,7 +19,7 @@ type Repository interface {
 	RemoteURLInformer
 	Fetch(remote Remote) error
 	Checkout(remote Remote, branch string) Checkout
-	PushRelease(branch string) error
+	Push(remote Remote, branch string) error
 	DeleteBranch(branch string) error
 	CommitChanges(message string) error
 }

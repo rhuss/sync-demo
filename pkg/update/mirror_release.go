@@ -86,7 +86,11 @@ func (p pushBranch) push() error {
 		p.Logger.Println(color.Yellow("- Skipping push, because of dry run"))
 		return nil
 	}
-	return errors.Wrap(p.Repository.PushRelease(p.branch), ErrUpdateFailed)
+	remote := git.Remote{
+		Name: "downstream",
+		URL:  p.Config.Downstream,
+	}
+	return errors.Wrap(p.Repository.Push(remote, p.branch), ErrUpdateFailed)
 }
 
 func (p pushBranch) delete() error {
