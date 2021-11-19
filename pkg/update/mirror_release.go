@@ -31,8 +31,8 @@ func (o Operation) pushRelease(rel release) step {
 		if err != nil {
 			return err
 		}
-		pr := pushRelease{State: o.State, rel: rel}
-		return runSteps(pr.steps(branch))
+		pr := pushBranch{State: o.State, branch: branch}
+		return runSteps(pr.steps())
 	}
 }
 
@@ -69,30 +69,26 @@ func (r createNewRelease) checkoutAsNewRelease(upstreamBranch, downstreamBranch 
 	}
 }
 
-type pushRelease struct {
+type pushBranch struct {
 	state.State
-	rel release
+	branch string
 }
 
-func (p pushRelease) steps(branch string) []step {
+func (p pushBranch) steps() []step {
 	return []step{
-		p.pushRelease(branch),
-		p.deleteRelease(branch),
+		p.push,
+		p.delete,
 	}
 }
 
-func (p pushRelease) pushRelease(branch string) step {
-	return func() error {
-		if p.DryRun {
-			p.Logger.Println(color.Yellow("- Skipping push, because of dry run"))
-			return nil
-		}
-		return errors.Wrap(p.Repository.PushRelease(branch), ErrUpdateFailed)
+func (p pushBranch) push() error {
+	if p.DryRun {
+		p.Logger.Println(color.Yellow("- Skipping push, because of dry run"))
+		return nil
 	}
+	return errors.Wrap(p.Repository.PushRelease(p.branch), ErrUpdateFailed)
 }
 
-func (p pushRelease) deleteRelease(branch string) step {
-	return func() error {
-		return errors.Wrap(p.Repository.DeleteBranch(branch), ErrUpdateFailed)
-	}
+func (p pushBranch) delete() error {
+	return errors.Wrap(p.Repository.DeleteBranch(p.branch), ErrUpdateFailed)
 }
