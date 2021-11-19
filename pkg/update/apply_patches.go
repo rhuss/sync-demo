@@ -41,7 +41,7 @@ func (o Operation) applyPatches() error {
 	})
 }
 
-func withWorkingDirectory(path string, fn func () error) error {
+func withWorkingDirectory(path string, fn func() error) error {
 	currentWD, err := os.Getwd()
 	if err != nil {
 		return errors.Wrap(err, ErrUpdateFailed)

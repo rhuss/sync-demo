@@ -14,6 +14,7 @@ type Config struct {
 type Branches struct {
 	Main        string `valid:"required"`
 	ReleaseNext string `valid:"required"`
+	SynchCI     string `valid:"required"`
 	ReleaseTemplates
 	Searches
 }

@@ -11,6 +11,7 @@ func newDefaults() Config {
 		Branches: Branches{
 			Main:        "main",
 			ReleaseNext: "release-next",
+			SynchCI:     "ci/release-next",
 			ReleaseTemplates: ReleaseTemplates{
 				Upstream:   releaseTemplate,
 				Downstream: releaseTemplate,
