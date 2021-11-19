@@ -4,6 +4,8 @@ go 1.16
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
+	github.com/fatih/color v1.13.0
+	github.com/go-git/go-billy/v5 v5.3.1
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/magefile/mage v1.11.0
@@ -17,7 +19,6 @@ require (
 
 // indirect deps
 require (
-	github.com/fatih/color v1.13.0
 	github.com/google/go-containerregistry v0.7.0 // indirect
 	github.com/stretchr/testify v1.7.1-0.20210427113832-6241f9ab9942 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect

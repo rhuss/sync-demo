@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"regexp"
+	"sort"
 	"text/template"
 
 	"github.com/cardil/deviate/pkg/config/git"
@@ -54,6 +55,10 @@ func (r release) Name(tpl string) (string, error) {
 	return buff.String(), nil
 }
 
+func (r release) less(o release) bool {
+	return r.Major < o.Major || (r.Major == o.Major && r.Minor < o.Minor)
+}
+
 func (o Operation) findMissingDownstreamReleases() ([]release, error) {
 	var upstreamReleases, downstreamReleases []release
 	var err error
@@ -80,6 +85,9 @@ func (o Operation) findMissingDownstreamReleases() ([]release, error) {
 		}
 	}
 
+	sort.Slice(missing, func(i, j int) bool {
+		return missing[i].less(missing[j])
+	})
 	return missing, nil
 }
 

@@ -21,4 +21,5 @@ type Repository interface {
 	Checkout(remote Remote, branch string) Checkout
 	PushRelease(branch string) error
 	DeleteBranch(branch string) error
+	CommitChanges(message string) error
 }

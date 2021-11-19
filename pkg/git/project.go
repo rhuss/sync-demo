@@ -42,5 +42,9 @@ type Project struct {
 
 // Repository returns a Git repository implementation.
 func (p Project) Repository() *Repository {
-	return &Repository{Repository: p.repo, Context: p.state.Context}
+	return &Repository{
+		Context:    p.state.Context,
+		Project:    p.Project,
+		Repository: p.repo,
+	}
 }

@@ -30,6 +30,7 @@ func Upgrade(logger log.Logger, projectFactory func() config.Project) error {
 	if err != nil {
 		return pkgerrors.Wrap(err, ErrConfigurationIsInvalid)
 	}
+	st.Project = &project.Project
 	st.Repository = project.Repository()
 	st.Config = &cfg
 	op := pkgupdate.Operation{State: st}

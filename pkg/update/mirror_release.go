@@ -10,7 +10,6 @@ import (
 func (o Operation) mirrorRelease(rel release) error {
 	return runSteps([]step{
 		o.createNewRelease(rel),
-		o.removeGithubWorkflows,
 		o.addForkFiles,
 		o.applyPatches,
 		o.switchToMain,

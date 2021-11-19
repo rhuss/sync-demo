@@ -11,6 +11,7 @@ import (
 // State represents a state of running tool.
 type State struct {
 	*config.Config
+	*config.Project
 	git.Repository
 	context.Context
 	log.Logger

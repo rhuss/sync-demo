@@ -2,10 +2,11 @@ package config
 
 // Config for a deviate to operate.
 type Config struct {
-	Upstream        string `valid:"required"`
-	Downstream      string `valid:"required"`
-	SynchronizeTags bool
-	DryRun          bool
+	Upstream                   string `valid:"required"`
+	Downstream                 string `valid:"required"`
+	SynchronizeTags            bool
+	DryRun                     bool
+	GithubWorkflowsRemovalGlob string `valid:"required"`
 	Branches
 }
 

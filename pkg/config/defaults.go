@@ -7,6 +7,7 @@ func newDefaults() Config {
 		releaseSearch   = `release-(\d+)\.(\d+)`
 	)
 	return Config{
+		GithubWorkflowsRemovalGlob: "knative-*.y?ml",
 		Branches: Branches{
 			Main:        "main",
 			ReleaseNext: "release-next",

@@ -36,3 +36,10 @@ func (o Operation) switchToMain() error {
 		ErrUpdateFailed,
 	)
 }
+
+func (o Operation) commitChanges(message string) step {
+	return func() error {
+		o.Println("- Committing changes:", message)
+		return errors.Wrap(o.Repository.CommitChanges(message), ErrUpdateFailed)
+	}
+}
