@@ -5,6 +5,7 @@ import (
 	"context"
 
 	"github.com/cardil/deviate/pkg/errors"
+	"github.com/cardil/deviate/pkg/files"
 	"github.com/cardil/deviate/pkg/metadata"
 	"github.com/cli/cli/v2/pkg/cmd/factory"
 	ghroot "github.com/cli/cli/v2/pkg/cmd/root"
@@ -14,14 +15,15 @@ import (
 var ErrClientFailed = errors.New("client failed")
 
 // NewClient creates new client.
-func NewClient(args ...string) Client {
-	return Client{Args: args}
+func NewClient(projectDir string, args ...string) Client {
+	return Client{Args: args, ProjectDir: projectDir}
 }
 
 // Client a client for Github CLI.
 type Client struct {
 	Args         []string
 	DisableColor bool
+	ProjectDir   string
 }
 
 // Execute a Github client CLI command.
@@ -35,6 +37,16 @@ func (c Client) Execute(ctx context.Context) (*bytes.Buffer, error) {
 	if c.DisableColor {
 		cmdFactory.IOStreams.SetColorEnabled(false)
 	}
-	err := cmd.ExecuteContext(ctx)
+	runner := func() error {
+		return errors.Wrap(cmd.ExecuteContext(ctx), ErrClientFailed)
+	}
+	if c.ProjectDir != "" {
+		previousRunner := runner
+		runner = func() error {
+			return errors.Wrap(files.WithinDirectory(c.ProjectDir, previousRunner),
+				ErrClientFailed)
+		}
+	}
+	err := runner()
 	return &buff, errors.Wrap(err, ErrClientFailed)
 }

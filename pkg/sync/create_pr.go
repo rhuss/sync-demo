@@ -36,13 +36,15 @@ func (c createPR) active() (*string, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
-	cl := github.NewClient("pr", "list",
+	cl := github.NewClient(c.Project.Path,
+		"pr", "list",
 		"--repo", repo,
 		"--state", "open",
 		"--author", "@me",
 		"--search", c.triggerCIMessage(),
 		"--json", "url")
 	cl.DisableColor = true
+	cl.ProjectDir = c.Project.Path
 	buff, err := cl.Execute(c.Context)
 	if err != nil {
 		return nil, errors.Wrap(err, ErrSyncFailed)
@@ -65,7 +67,8 @@ func (c createPR) open() error {
 	if err != nil {
 		return errors.Wrap(err, ErrSyncFailed)
 	}
-	cl := github.NewClient("pr", "create",
+	cl := github.NewClient(c.Project.Path,
+		"pr", "create",
 		"--repo", repo,
 		"--body", fmt.Sprintf("This automated PR is to make sure the "+
 			"forked project's `%s` branch (forked upstream's `%s` branch) passes"+
@@ -73,6 +76,7 @@ func (c createPR) open() error {
 		"--title", c.triggerCIMessage(),
 		"--base", c.Config.Branches.ReleaseNext,
 		"--head", c.Config.Branches.SynchCI)
+	cl.ProjectDir = c.Project.Path
 	buff, err := cl.Execute(c.Context)
 	defer c.Println(buff.String())
 	return errors.Wrap(err, ErrSyncFailed)

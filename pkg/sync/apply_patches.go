@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/cardil/deviate/pkg/errors"
+	pkgfiles "github.com/cardil/deviate/pkg/files"
 	"github.com/cardil/deviate/pkg/log/color"
 	"github.com/magefile/mage/sh"
 )
@@ -27,31 +28,16 @@ func (o Operation) applyPatches() error {
 		o.Printf("-- Applying %s\n", color.Blue(filePath))
 
 		// TODO: Consider rewriting this to Go native code instead shell invocation.
-		err = withWorkingDirectory(o.Project.Path, func() error {
+		err = pkgfiles.WithinDirectory(o.Project.Path, func() error {
 			return errors.Wrap(sh.RunV("git", "apply", filePath),
 				ErrSyncFailed)
 		})
 		if err != nil {
-			return err
+			return errors.Wrap(err, ErrSyncFailed)
 		}
 	}
 
 	return runSteps([]step{
 		o.commitChanges(":fire: Apply carried patches"),
 	})
-}
-
-func withWorkingDirectory(path string, fn func() error) error {
-	currentWD, err := os.Getwd()
-	if err != nil {
-		return errors.Wrap(err, ErrSyncFailed)
-	}
-	err = os.Chdir(path)
-	if err != nil {
-		return errors.Wrap(err, ErrSyncFailed)
-	}
-	defer func() {
-		_ = os.Chdir(currentWD)
-	}()
-	return fn()
 }
