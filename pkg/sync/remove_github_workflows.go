@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"io/ioutil"
@@ -15,14 +15,14 @@ func (o Operation) removeGithubWorkflows() error {
 
 	dir, err := ioutil.ReadDir(workflows)
 	if err != nil {
-		return errors.Wrap(err, ErrUpdateFailed)
+		return errors.Wrap(err, ErrSyncFailed)
 	}
 	for _, d := range dir {
 		fp := path.Join(workflows, d.Name())
 		if ok, _ := filepath.Match(o.GithubWorkflowsRemovalGlob, path.Base(fp)); ok {
 			err = os.RemoveAll(fp)
 			if err != nil {
-				return errors.Wrap(err, ErrUpdateFailed)
+				return errors.Wrap(err, ErrSyncFailed)
 			}
 		}
 	}

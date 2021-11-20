@@ -1,6 +1,6 @@
-package update
+package sync
 
-func (o Operation) updateReleaseNext() error {
+func (o Operation) syncReleaseNext() error {
 	return runSteps([]step{
 		o.resetReleaseNext,
 		o.addForkFiles,

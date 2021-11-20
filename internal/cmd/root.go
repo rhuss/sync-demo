@@ -18,7 +18,7 @@ func root(customizers ...Option) *cobra.Command {
 	cmd.SetErr(os.Stderr)
 	opts := &cli.Options{}
 	subs := []subcommand{
-		update{opts},
+		sync{opts},
 	}
 	addFlags(cmd, opts)
 	for _, sub := range subs {

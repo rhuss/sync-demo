@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"encoding/json"
@@ -34,7 +34,7 @@ var errPrNotFound = errors.New("PR not found")
 func (c createPR) active() (*string, error) {
 	repo, err := c.repository()
 	if err != nil {
-		return nil, errors.Wrap(err, ErrUpdateFailed)
+		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 	cl := github.NewClient("pr", "list",
 		"--repo", repo,
@@ -45,12 +45,12 @@ func (c createPR) active() (*string, error) {
 	cl.DisableColor = true
 	buff, err := cl.Execute(c.Context)
 	if err != nil {
-		return nil, errors.Wrap(err, ErrUpdateFailed)
+		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 	un := make([]map[string]interface{}, 0)
 	err = json.Unmarshal(buff.Bytes(), &un)
 	if err != nil {
-		return nil, errors.Wrap(err, ErrUpdateFailed)
+		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 
 	if len(un) > 0 {
@@ -63,7 +63,7 @@ func (c createPR) active() (*string, error) {
 func (c createPR) open() error {
 	repo, err := c.repository()
 	if err != nil {
-		return errors.Wrap(err, ErrUpdateFailed)
+		return errors.Wrap(err, ErrSyncFailed)
 	}
 	cl := github.NewClient("pr", "create",
 		"--repo", repo,
@@ -75,13 +75,13 @@ func (c createPR) open() error {
 		"--head", c.Config.Branches.SynchCI)
 	buff, err := cl.Execute(c.Context)
 	defer c.Println(buff.String())
-	return errors.Wrap(err, ErrUpdateFailed)
+	return errors.Wrap(err, ErrSyncFailed)
 }
 
 func (c createPR) repository() (string, error) {
 	addr, err := git.ParseAddress(c.Config.Downstream)
 	if err != nil {
-		return "", errors.Wrap(err, ErrUpdateFailed)
+		return "", errors.Wrap(err, ErrSyncFailed)
 	}
 	return addr.Path, nil
 }

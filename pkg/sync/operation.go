@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"github.com/cardil/deviate/pkg/config/git"
@@ -6,10 +6,10 @@ import (
 	"github.com/cardil/deviate/pkg/state"
 )
 
-// ErrUpdateFailed when the update failed.
-var ErrUpdateFailed = errors.New("update failed")
+// ErrSyncFailed when the sync failed.
+var ErrSyncFailed = errors.New("sync failed")
 
-// Operation performs update - the upstream synchronization.
+// Operation performs sync - the upstream synchronization.
 type Operation struct {
 	state.State
 }
@@ -17,7 +17,7 @@ type Operation struct {
 func (o Operation) Run() error {
 	err := runSteps([]step{
 		o.mirrorReleases,
-		o.updateReleaseNext,
+		o.syncReleaseNext,
 		o.triggerCI,
 		o.createPR,
 	})
@@ -29,11 +29,11 @@ func (o Operation) switchToMain() error {
 	downstream := git.Remote{Name: "downstream", URL: o.Config.Downstream}
 	err := o.Repository.Fetch(downstream)
 	if err != nil {
-		return errors.Wrap(err, ErrUpdateFailed)
+		return errors.Wrap(err, ErrSyncFailed)
 	}
 	return errors.Wrap(
 		o.Repository.Checkout(downstream, o.Config.Main).As(o.Config.Main),
-		ErrUpdateFailed,
+		ErrSyncFailed,
 	)
 }
 
@@ -42,12 +42,12 @@ func (o Operation) commitChanges(message string) step {
 		o.Println("- Committing changes:", message)
 		commit, err := o.Repository.CommitChanges(message)
 		if err != nil {
-			return errors.Wrap(err, ErrUpdateFailed)
+			return errors.Wrap(err, ErrSyncFailed)
 		}
 		stats, err := commit.StatsContext(o.Context)
 		if err == nil {
 			o.Printf("-- Statistics:\n%s\n", stats)
 		}
-		return errors.Wrap(err, ErrUpdateFailed)
+		return errors.Wrap(err, ErrSyncFailed)
 	}
 }

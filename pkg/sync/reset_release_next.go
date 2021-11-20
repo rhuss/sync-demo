@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"github.com/cardil/deviate/pkg/config/git"
@@ -14,5 +14,5 @@ func (o Operation) resetReleaseNext() error {
 	}
 	err := o.Repository.Checkout(remote, o.Config.Branches.Main).
 		As(o.Config.Branches.ReleaseNext)
-	return errors.Wrap(err, ErrUpdateFailed)
+	return errors.Wrap(err, ErrSyncFailed)
 }

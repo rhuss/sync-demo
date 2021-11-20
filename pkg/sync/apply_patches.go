@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"os"
@@ -29,7 +29,7 @@ func (o Operation) applyPatches() error {
 		// TODO: Consider rewriting this to Go native code instead shell invocation.
 		err = withWorkingDirectory(o.Project.Path, func() error {
 			return errors.Wrap(sh.RunV("git", "apply", filePath),
-				ErrUpdateFailed)
+				ErrSyncFailed)
 		})
 		if err != nil {
 			return err
@@ -44,11 +44,11 @@ func (o Operation) applyPatches() error {
 func withWorkingDirectory(path string, fn func() error) error {
 	currentWD, err := os.Getwd()
 	if err != nil {
-		return errors.Wrap(err, ErrUpdateFailed)
+		return errors.Wrap(err, ErrSyncFailed)
 	}
 	err = os.Chdir(path)
 	if err != nil {
-		return errors.Wrap(err, ErrUpdateFailed)
+		return errors.Wrap(err, ErrSyncFailed)
 	}
 	defer func() {
 		_ = os.Chdir(currentWD)

@@ -9,16 +9,16 @@ import (
 	"github.com/cardil/deviate/pkg/log"
 	"github.com/cardil/deviate/pkg/log/color"
 	"github.com/cardil/deviate/pkg/state"
-	pkgupdate "github.com/cardil/deviate/pkg/update"
+	"github.com/cardil/deviate/pkg/sync"
 )
 
 // ErrConfigurationIsInvalid when configuration is invalid.
 var ErrConfigurationIsInvalid = errors.New("configuration is invalid")
 
-// Upgrade will perform upgrade operation.
-func Upgrade(logger log.Logger, projectFactory func() config.Project) error {
+// Sync will perform synchronization to upstream branches.
+func Sync(logger log.Logger, projectFactory func() config.Project) error {
 	st := state.New(log.LabeledLogger{
-		Label: color.Green("[deviate:update]"),
+		Label: color.Green("[deviate:sync]"),
 		Logger: log.TimedLogger{
 			Logger: logger,
 		},
@@ -35,6 +35,6 @@ func Upgrade(logger log.Logger, projectFactory func() config.Project) error {
 	st.Project = &project.Project
 	st.Repository = project.Repository()
 	st.Config = &cfg
-	op := pkgupdate.Operation{State: st}
-	return pkgerrors.Wrap(op.Run(), pkgupdate.ErrUpdateFailed)
+	op := sync.Operation{State: st}
+	return pkgerrors.Wrap(op.Run(), sync.ErrSyncFailed)
 }

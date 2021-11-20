@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"github.com/cardil/deviate/pkg/config/git"
@@ -58,14 +58,14 @@ func (r createNewRelease) step() error {
 }
 
 func (r createNewRelease) fetch() error {
-	return errors.Wrap(r.Repository.Fetch(r.remote), ErrUpdateFailed)
+	return errors.Wrap(r.Repository.Fetch(r.remote), ErrSyncFailed)
 }
 
 func (r createNewRelease) checkoutAsNewRelease(upstreamBranch, downstreamBranch string) step {
 	return func() error {
 		return errors.Wrap(
 			r.Repository.Checkout(r.remote, upstreamBranch).As(downstreamBranch),
-			ErrUpdateFailed)
+			ErrSyncFailed)
 	}
 }
 
@@ -90,9 +90,9 @@ func (p pushBranch) push() error {
 		Name: "downstream",
 		URL:  p.Config.Downstream,
 	}
-	return errors.Wrap(p.Repository.Push(remote, p.branch), ErrUpdateFailed)
+	return errors.Wrap(p.Repository.Push(remote, p.branch), ErrSyncFailed)
 }
 
 func (p pushBranch) delete() error {
-	return errors.Wrap(p.Repository.DeleteBranch(p.branch), ErrUpdateFailed)
+	return errors.Wrap(p.Repository.DeleteBranch(p.branch), ErrSyncFailed)
 }

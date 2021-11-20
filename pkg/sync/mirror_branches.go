@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"bytes"
@@ -45,12 +45,12 @@ func (r release) String() string {
 func (r release) Name(tpl string) (string, error) {
 	eng, err := template.New("release").Parse(tpl)
 	if err != nil {
-		return "", errors.Wrap(err, ErrUpdateFailed)
+		return "", errors.Wrap(err, ErrSyncFailed)
 	}
 	var buff bytes.Buffer
 	err = eng.Execute(&buff, r)
 	if err != nil {
-		return "", errors.Wrap(err, ErrUpdateFailed)
+		return "", errors.Wrap(err, ErrSyncFailed)
 	}
 	return buff.String(), nil
 }
@@ -64,11 +64,11 @@ func (o Operation) findMissingDownstreamReleases() ([]release, error) {
 	var err error
 	downstreamReleases, err = o.listReleases(false)
 	if err != nil {
-		return nil, errors.Wrap(err, ErrUpdateFailed)
+		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 	upstreamReleases, err = o.listReleases(true)
 	if err != nil {
-		return nil, errors.Wrap(err, ErrUpdateFailed)
+		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 
 	missing := make([]release, 0, len(upstreamReleases))
@@ -101,7 +101,7 @@ func (o Operation) listReleases(upstream bool) ([]release, error) {
 
 	refs, err := o.Repository.ListRemote(git.Remote{Name: "origin", URL: url})
 	if err != nil {
-		return nil, errors.Wrap(err, ErrUpdateFailed)
+		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 
 	releases := make([]release, 0)

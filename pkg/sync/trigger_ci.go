@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"fmt"
@@ -40,7 +40,7 @@ func (c triggerCI) checkout() error {
 	}
 	err := c.Repository.Checkout(remote, c.Config.Branches.ReleaseNext).
 		As(c.Config.Branches.SynchCI)
-	return errors.Wrap(err, ErrUpdateFailed)
+	return errors.Wrap(err, ErrSyncFailed)
 }
 
 func (c triggerCI) addChange() error {
@@ -48,5 +48,5 @@ func (c triggerCI) addChange() error {
 	content := time.Now().Format(time.RFC3339)
 	const fileReadableToOwnerPerm = 0o600
 	err := ioutil.WriteFile(filePath, []byte(content), fileReadableToOwnerPerm)
-	return errors.Wrap(err, ErrUpdateFailed)
+	return errors.Wrap(err, ErrSyncFailed)
 }

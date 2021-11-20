@@ -1,4 +1,4 @@
-package update
+package sync
 
 import (
 	"github.com/cardil/deviate/pkg/config/git"
@@ -13,8 +13,8 @@ func (o Operation) addForkFiles() error {
 			upstream := git.Remote{Name: "upstream", URL: o.Config.Upstream}
 			err := o.Repository.Checkout(upstream, o.Config.Branches.Main).
 				OntoWorkspace()
-			return errors.Wrap(err, ErrUpdateFailed)
+			return errors.Wrap(err, ErrSyncFailed)
 		},
-		o.commitChanges(":open_file_folder: Update fork specific files"),
+		o.commitChanges(":open_file_folder: Apply fork specific files"),
 	})
 }
