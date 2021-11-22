@@ -11,16 +11,18 @@ var ErrCannotChangeDirectory = errors.New("cannot change directory")
 
 // WithinDirectory executes given function within directory.
 func WithinDirectory(path string, fn func() error) error {
-	currentWD, err := os.Getwd()
+	current, err := os.Getwd()
 	if err != nil {
-		return errors.Wrap(err, ErrCannotChangeDirectory)
+		current = ""
 	}
 	err = os.Chdir(path)
 	if err != nil {
 		return errors.Wrap(err, ErrCannotChangeDirectory)
 	}
 	defer func() {
-		_ = os.Chdir(currentWD)
+		if current != "" {
+			_ = os.Chdir(current)
+		}
 	}()
 	return fn()
 }

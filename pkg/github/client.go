@@ -15,8 +15,8 @@ import (
 var ErrClientFailed = errors.New("client failed")
 
 // NewClient creates new client.
-func NewClient(projectDir string, args ...string) Client {
-	return Client{Args: args, ProjectDir: projectDir}
+func NewClient(args ...string) Client {
+	return Client{Args: args}
 }
 
 // Client a client for Github CLI.

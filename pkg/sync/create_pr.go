@@ -36,8 +36,7 @@ func (c createPR) active() (*string, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
-	cl := github.NewClient(c.Project.Path,
-		"pr", "list",
+	cl := github.NewClient("pr", "list",
 		"--repo", repo,
 		"--state", "open",
 		"--author", "@me",
@@ -67,8 +66,7 @@ func (c createPR) open() error {
 	if err != nil {
 		return errors.Wrap(err, ErrSyncFailed)
 	}
-	cl := github.NewClient(c.Project.Path,
-		"pr", "create",
+	cl := github.NewClient("pr", "create",
 		"--repo", repo,
 		"--body", fmt.Sprintf("This automated PR is to make sure the "+
 			"forked project's `%s` branch (forked upstream's `%s` branch) passes"+
