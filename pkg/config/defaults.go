@@ -21,5 +21,8 @@ func newDefaults() Config {
 				DownstreamReleases: releaseSearch,
 			},
 		},
+		Tags: Tags{
+			RefSpec: "v*",
+		},
 	}
 }

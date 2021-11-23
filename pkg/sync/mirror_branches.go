@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"sort"
+	"strconv"
 	"text/template"
 
 	"github.com/cardil/deviate/pkg/config/git"
@@ -35,11 +36,11 @@ func (o Operation) mirrorReleases() error {
 }
 
 type release struct {
-	Major, Minor string
+	Major, Minor int
 }
 
 func (r release) String() string {
-	return r.Major + "." + r.Minor
+	return strconv.Itoa(r.Major) + "." + strconv.Itoa(r.Minor)
 }
 
 func (r release) Name(tpl string) (string, error) {
@@ -111,11 +112,19 @@ func (o Operation) listReleases(upstream bool) ([]release, error) {
 		if name.IsBranch() {
 			branch := name.Short()
 			if matches := re.FindStringSubmatch(branch); matches != nil {
-				version := release{matches[1], matches[2]}
+				version := release{atoi(matches[1]), atoi(matches[2])}
 				releases = append(releases, version)
 			}
 		}
 	}
 
 	return releases, nil
+}
+
+func atoi(s string) int {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		return 0
+	}
+	return i
 }

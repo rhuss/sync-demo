@@ -3,7 +3,9 @@ package sync
 import (
 	"github.com/cardil/deviate/pkg/config/git"
 	"github.com/cardil/deviate/pkg/errors"
+	"github.com/cardil/deviate/pkg/log/color"
 	"github.com/cardil/deviate/pkg/state"
+	"github.com/go-git/go-git/v5/plumbing"
 )
 
 // ErrSyncFailed when the sync failed.
@@ -17,6 +19,7 @@ type Operation struct {
 func (o Operation) Run() error {
 	err := runSteps([]step{
 		o.mirrorReleases,
+		o.syncTags,
 		o.syncReleaseNext,
 		o.triggerCI,
 		o.createPR,
@@ -50,4 +53,10 @@ func (o Operation) commitChanges(message string) step {
 		}
 		return errors.Wrap(err, ErrSyncFailed)
 	}
+}
+
+func (o Operation) syncTags() error {
+	refName := plumbing.NewTagReferenceName(o.Config.Tags.RefSpec)
+	o.Println("- Syncing tags:", color.Blue(refName))
+	return publish(o.State, "tag synchronization", refName)
 }

@@ -1,10 +1,13 @@
 package sync
 
 import (
+	"fmt"
+
 	"github.com/cardil/deviate/pkg/config/git"
 	"github.com/cardil/deviate/pkg/errors"
 	"github.com/cardil/deviate/pkg/log/color"
 	"github.com/cardil/deviate/pkg/state"
+	"github.com/go-git/go-git/v5/plumbing"
 )
 
 func (o Operation) mirrorRelease(rel release) error {
@@ -31,7 +34,7 @@ func (o Operation) pushRelease(rel release) step {
 		if err != nil {
 			return err
 		}
-		pr := pushBranch{State: o.State, branch: branch}
+		pr := push{State: o.State, branch: branch}
 		return runSteps(pr.steps())
 	}
 }
@@ -69,30 +72,36 @@ func (r createNewRelease) checkoutAsNewRelease(upstreamBranch, downstreamBranch 
 	}
 }
 
-type pushBranch struct {
+type push struct {
 	state.State
 	branch string
 }
 
-func (p pushBranch) steps() []step {
+func (p push) steps() []step {
 	return []step{
 		p.push,
 		p.delete,
 	}
 }
 
-func (p pushBranch) push() error {
-	if p.DryRun {
-		p.Logger.Println(color.Yellow("- Skipping push, because of dry run"))
+func (p push) push() error {
+	refName := plumbing.NewBranchReferenceName(p.branch)
+	return publish(p.State, "release push", refName)
+}
+
+func (p push) delete() error {
+	return errors.Wrap(p.Repository.DeleteBranch(p.branch), ErrSyncFailed)
+}
+
+func publish(state state.State, title string, refName plumbing.ReferenceName) error {
+	if state.Config.DryRun {
+		state.Logger.Println(color.Yellow(fmt.Sprintf(
+			"- Skipping %s, because of dry run", title)))
 		return nil
 	}
 	remote := git.Remote{
 		Name: "downstream",
-		URL:  p.Config.Downstream,
+		URL:  state.Config.Downstream,
 	}
-	return errors.Wrap(p.Repository.Push(remote, p.branch), ErrSyncFailed)
-}
-
-func (p pushBranch) delete() error {
-	return errors.Wrap(p.Repository.DeleteBranch(p.branch), ErrSyncFailed)
+	return errors.Wrap(state.Repository.Push(remote, refName), ErrSyncFailed)
 }

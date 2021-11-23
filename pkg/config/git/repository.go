@@ -22,7 +22,7 @@ type Repository interface {
 	RemoteURLInformer
 	Fetch(remote Remote) error
 	Checkout(remote Remote, branch string) Checkout
-	Push(remote Remote, branch string) error
+	Push(remote Remote, refname plumbing.ReferenceName) error
 	DeleteBranch(branch string) error
 	CommitChanges(message string) (*object.Commit, error)
 }

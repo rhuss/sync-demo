@@ -11,7 +11,7 @@ func (o Operation) syncReleaseNext() error {
 
 func (o Operation) pushBranch(branch string) step {
 	return func() error {
-		p := pushBranch{
+		p := push{
 			State:  o.State,
 			branch: branch,
 		}

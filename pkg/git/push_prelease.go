@@ -10,10 +10,10 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
-func (r Repository) Push(remote git.Remote, branch string) error {
+func (r Repository) Push(remote git.Remote, refname plumbing.ReferenceName) error {
 	repo := r.Repository
 	specs := []config.RefSpec{
-		refSpecForReferenceName(plumbing.NewBranchReferenceName(branch)),
+		refSpecForReferenceName(refname),
 	}
 	auth, err := authentication(remote)
 	if err != nil {
@@ -25,6 +25,9 @@ func (r Repository) Push(remote git.Remote, branch string) error {
 		Auth:       auth,
 		Force:      true,
 	})
+	if errors.Is(err, gitv5.NoErrAlreadyUpToDate) {
+		return nil
+	}
 	return errors.Wrap(err, ErrRemoteOperationFailed)
 }
 
