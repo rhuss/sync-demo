@@ -34,6 +34,7 @@ func (c Client) Execute(ctx context.Context) (*bytes.Buffer, error) {
 	cmd.SetArgs(c.Args)
 	var buff bytes.Buffer
 	cmdFactory.IOStreams.Out = &buff
+	cmdFactory.IOStreams.ErrOut = &buff
 	if c.DisableColor {
 		cmdFactory.IOStreams.SetColorEnabled(false)
 	}

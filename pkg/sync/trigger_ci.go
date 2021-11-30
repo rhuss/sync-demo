@@ -15,8 +15,10 @@ func (o Operation) triggerCI() error {
 }
 
 func (o Operation) triggerCIMessage() string {
-	return fmt.Sprintf(":robot: Triggering CI on branch `%s` after synching to `upstream/%s`",
-		o.Config.Branches.ReleaseNext, o.Config.Branches.Main)
+	return fmt.Sprintf(
+		o.Config.Messages.TriggerCI,
+		o.Config.Branches.ReleaseNext,
+		o.Config.Branches.Main)
 }
 
 type triggerCI struct {
@@ -29,7 +31,7 @@ func (c triggerCI) run() error {
 		c.checkout,
 		c.addChange,
 		c.commitChanges(c.triggerCIMessage()),
-		c.pushBranch(c.Config.Branches.SynchCI),
+		c.pushBranch(c.Config.Branches.SynchCI + c.Config.Branches.ReleaseNext),
 	})
 }
 
@@ -39,7 +41,7 @@ func (c triggerCI) checkout() error {
 		URL:  c.Config.Downstream,
 	}
 	err := c.Repository.Checkout(remote, c.Config.Branches.ReleaseNext).
-		As(c.Config.Branches.SynchCI)
+		As(c.Config.Branches.SynchCI + c.Config.Branches.ReleaseNext)
 	return errors.Wrap(err, ErrSyncFailed)
 }
 

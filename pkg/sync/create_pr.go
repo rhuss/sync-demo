@@ -10,9 +10,19 @@ import (
 	"github.com/cardil/deviate/pkg/log/color"
 )
 
-func (o Operation) createPR() error {
-	o.Println("Create a sync PR")
-	pr := createPR{o}
+func (o Operation) createSyncReleaseNextPR() error {
+	branches := o.Config.Branches
+	return o.createPR(
+		o.triggerCIMessage(),
+		fmt.Sprintf(o.Config.Messages.TriggerCIBody, branches.ReleaseNext, branches.Main),
+		branches.ReleaseNext,
+		branches.SynchCI+branches.ReleaseNext,
+	)
+}
+
+func (o Operation) createPR(title, body, base, head string) error {
+	o.Println("Create a sync PR for:", color.Blue(base))
+	pr := createPR{Operation: o, title: title, body: body, base: base, head: head}
 	url, err := pr.active()
 	if err != nil {
 		if errors.Is(err, errPrNotFound) {
@@ -21,12 +31,17 @@ func (o Operation) createPR() error {
 		return err
 	}
 
-	o.Println("There is a PR open already at:", color.Yellow(*url))
+	o.Printf("Thr PR for %s is already active: %s\n",
+		color.Blue(base), color.Yellow(*url))
 	return nil
 }
 
 type createPR struct {
 	Operation
+	title string
+	body  string
+	base  string
+	head  string
 }
 
 var errPrNotFound = errors.New("PR not found")
@@ -40,7 +55,7 @@ func (c createPR) active() (*string, error) {
 		"--repo", repo,
 		"--state", "open",
 		"--author", "@me",
-		"--search", c.triggerCIMessage(),
+		"--search", c.title,
 		"--json", "url")
 	cl.DisableColor = true
 	cl.ProjectDir = c.Project.Path
@@ -66,17 +81,21 @@ func (c createPR) open() error {
 	if err != nil {
 		return errors.Wrap(err, ErrSyncFailed)
 	}
-	cl := github.NewClient("pr", "create",
+	args := []string{
+		"pr", "create",
 		"--repo", repo,
-		"--body", fmt.Sprintf("This automated PR is to make sure the "+
-			"forked project's `%s` branch (forked upstream's `%s` branch) passes"+
-			" a CI.", c.Config.Branches.ReleaseNext, c.Config.Branches.Main),
-		"--title", c.triggerCIMessage(),
-		"--base", c.Config.Branches.ReleaseNext,
-		"--head", c.Config.Branches.SynchCI)
+		"--body", c.body,
+		"--title", c.title,
+		"--base", c.base,
+		"--head", c.head,
+	}
+	for _, label := range c.Config.SyncLabels {
+		args = append(args, "--label", label)
+	}
+	cl := github.NewClient(args...)
 	cl.ProjectDir = c.Project.Path
 	buff, err := cl.Execute(c.Context)
-	defer c.Println(buff.String())
+	defer c.Println("Github client:", buff.String())
 	return errors.Wrap(err, ErrSyncFailed)
 }
 

@@ -36,7 +36,12 @@ type onGoingCheckout struct {
 
 func (o onGoingCheckout) As(branch string) error {
 	repo := o.repo.Repository
-	hash, err := repo.ResolveRevision(o.revision())
+	err := o.repo.Fetch(o.remote)
+	if err != nil {
+		return errors.Wrap(err, ErrRemoteOperationFailed)
+	}
+	var hash *plumbing.Hash
+	hash, err = repo.ResolveRevision(o.revision())
 	if err != nil {
 		return errors.Wrap(err, ErrLocalOperationFailed)
 	}

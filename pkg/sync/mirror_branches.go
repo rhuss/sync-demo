@@ -32,7 +32,8 @@ func (o Operation) mirrorReleases() error {
 	} else {
 		o.Println("No missing releases found")
 	}
-	return nil
+
+	return o.resyncReleases(missing)
 }
 
 type release struct {
@@ -86,9 +87,6 @@ func (o Operation) findMissingDownstreamReleases() ([]release, error) {
 		}
 	}
 
-	sort.Slice(missing, func(i, j int) bool {
-		return missing[i].less(missing[j])
-	})
 	return missing, nil
 }
 
@@ -118,6 +116,9 @@ func (o Operation) listReleases(upstream bool) ([]release, error) {
 		}
 	}
 
+	sort.Slice(releases, func(i, j int) bool {
+		return releases[i].less(releases[j])
+	})
 	return releases, nil
 }
 

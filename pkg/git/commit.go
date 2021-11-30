@@ -12,6 +12,14 @@ func (r Repository) CommitChanges(message string) (*object.Commit, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, ErrLocalOperationFailed)
 	}
+	var st gitv5.Status
+	st, err = wt.Status()
+	if err != nil {
+		return nil, errors.Wrap(err, ErrLocalOperationFailed)
+	}
+	if st.IsClean() {
+		return nil, gitv5.NoErrAlreadyUpToDate
+	}
 	err = wt.AddWithOptions(&gitv5.AddOptions{
 		All:  true,
 		Path: ".",

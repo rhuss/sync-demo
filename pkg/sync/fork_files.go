@@ -15,6 +15,6 @@ func (o Operation) addForkFiles() error {
 				OntoWorkspace()
 			return errors.Wrap(err, ErrSyncFailed)
 		},
-		o.commitChanges(":open_file_folder: Apply fork specific files"),
+		o.commitChanges(o.Config.Messages.ApplyForkFiles),
 	})
 }

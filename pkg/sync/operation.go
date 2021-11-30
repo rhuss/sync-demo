@@ -5,6 +5,7 @@ import (
 	"github.com/cardil/deviate/pkg/errors"
 	"github.com/cardil/deviate/pkg/log/color"
 	"github.com/cardil/deviate/pkg/state"
+	gitv5 "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
@@ -22,7 +23,7 @@ func (o Operation) Run() error {
 		o.syncTags,
 		o.syncReleaseNext,
 		o.triggerCI,
-		o.createPR,
+		o.createSyncReleaseNextPR,
 	})
 	_ = o.switchToMain()
 	return err
@@ -45,6 +46,10 @@ func (o Operation) commitChanges(message string) step {
 		o.Println("- Committing changes:", message)
 		commit, err := o.Repository.CommitChanges(message)
 		if err != nil {
+			if errors.Is(err, gitv5.NoErrAlreadyUpToDate) {
+				o.Println("-- No changes to commit")
+				return nil
+			}
 			return errors.Wrap(err, ErrSyncFailed)
 		}
 		stats, err := commit.StatsContext(o.Context)

@@ -25,4 +25,5 @@ type Repository interface {
 	Push(remote Remote, refname plumbing.ReferenceName) error
 	DeleteBranch(branch string) error
 	CommitChanges(message string) (*object.Commit, error)
+	Merge(remote *Remote, branch string) error
 }
