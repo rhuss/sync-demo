@@ -17,6 +17,7 @@ var ErrConfigurationIsInvalid = errors.New("configuration is invalid")
 
 // Sync will perform synchronization to upstream branches.
 func Sync(logger log.Logger, projectFactory func() config.Project) error {
+	color.SetupMode()
 	st := state.New(log.LabeledLogger{
 		Label: color.Green("[deviate:sync]"),
 		Logger: log.TimedLogger{
