@@ -40,7 +40,7 @@ func (r Repository) Merge(remote *git.Remote, branch string) error {
 	})
 	if err != nil {
 		_ = pkgfiles.WithinDirectory(r.Project.Path, func() error {
-			return sh.RunV("git", "merge", "--abort")
+			return sh.RunV("git", "merge", "--abort") //nolint:wrapcheck
 		})
 		return errors.Wrap(err, ErrRemoteOperationFailed)
 	}
