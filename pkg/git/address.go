@@ -24,10 +24,10 @@ func ParseAddress(address string) (*Address, error) {
 			Protocol: u.Scheme,
 			User:     u.User.String(),
 			Host:     u.Host,
-			Path:     u.Path,
+			Path:     strings.TrimPrefix(u.Path, "/"),
 		}
 		const dot = "."
-		dotSplit := strings.Split(u.Path, dot)
+		dotSplit := strings.Split(addr.Path, dot)
 		if len(dotSplit) > 1 {
 			addr.Ext = dotSplit[len(dotSplit)-1]
 			addr.Path = strings.Join(dotSplit[:len(dotSplit)-1], dot)
