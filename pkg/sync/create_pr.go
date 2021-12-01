@@ -51,12 +51,18 @@ func (c createPR) active() (*string, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
-	cl := github.NewClient("pr", "list",
+	args := []string{
+		"pr", "list",
 		"--repo", repo,
 		"--state", "open",
 		"--author", "@me",
 		"--search", c.title,
-		"--json", "url")
+		"--json", "url",
+	}
+	for _, label := range c.Config.SyncLabels {
+		args = append(args, "--label", label)
+	}
+	cl := github.NewClient(args...)
 	cl.DisableColor = true
 	cl.ProjectDir = c.Project.Path
 	buff, err := cl.Execute(c.Context)
