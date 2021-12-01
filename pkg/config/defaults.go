@@ -35,6 +35,6 @@ func newDefaults() Config {
 				" a CI.",
 			ApplyForkFiles: ":open_file_folder: Apply fork specific files",
 		},
-		SyncLabels: []string{"sync/upstream"},
+		SyncLabels: []string{"kind/sync-fork-to-upstream"},
 	}
 }
