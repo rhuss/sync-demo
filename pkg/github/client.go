@@ -1,8 +1,8 @@
 package github
 
 import (
-	"bytes"
 	"context"
+	"os"
 
 	"github.com/cardil/deviate/pkg/errors"
 	"github.com/cardil/deviate/pkg/files"
@@ -27,14 +27,21 @@ type Client struct {
 }
 
 // Execute a Github client CLI command.
-func (c Client) Execute(ctx context.Context) (*bytes.Buffer, error) {
+func (c Client) Execute(ctx context.Context) ([]byte, error) {
 	buildVersion := metadata.Version
 	cmdFactory := factory.New(buildVersion)
-	cmd := ghroot.NewCmdRoot(cmdFactory, buildVersion, "-")
+	cmd, err := ghroot.NewCmdRoot(cmdFactory, buildVersion, "-")
+	if err != nil {
+		return nil, errors.Wrap(err, ErrClientFailed)
+	}
 	cmd.SetArgs(c.Args)
-	var buff bytes.Buffer
-	cmdFactory.IOStreams.Out = &buff
-	cmdFactory.IOStreams.ErrOut = &buff
+	tmpf, terr := os.CreateTemp("", "gh-")
+	if terr != nil {
+		return nil, errors.Wrap(terr, ErrClientFailed)
+	}
+	defer os.Remove(tmpf.Name())
+	cmdFactory.IOStreams.Out = tmpf
+	cmdFactory.IOStreams.ErrOut = os.Stderr
 	if c.DisableColor {
 		cmdFactory.IOStreams.SetColorEnabled(false)
 	}
@@ -48,6 +55,10 @@ func (c Client) Execute(ctx context.Context) (*bytes.Buffer, error) {
 				ErrClientFailed)
 		}
 	}
-	err := runner()
-	return &buff, errors.Wrap(err, ErrClientFailed)
+	err = runner()
+	bytes, ferr := os.ReadFile(tmpf.Name())
+	if ferr != nil {
+		return nil, errors.Wrap(ferr, ErrClientFailed)
+	}
+	return bytes, errors.Wrap(err, ErrClientFailed)
 }

@@ -2,15 +2,15 @@ package config
 
 // Config for a deviate to operate.
 type Config struct {
-	Upstream                   string `yaml:"upstream" valid:"required"`
-	Downstream                 string `yaml:"downstream" valid:"required"`
+	Upstream                   string `valid:"required"      yaml:"upstream"`
+	Downstream                 string `valid:"required"      yaml:"downstream"`
 	DryRun                     bool   `yaml:"dryRun"`
-	GithubWorkflowsRemovalGlob string `yaml:"githubWorkflowsRemovalGlob" valid:"required"`
+	GithubWorkflowsRemovalGlob string `valid:"required"      yaml:"githubWorkflowsRemovalGlob"`
 	ResyncReleases             `yaml:"resyncReleases"`
 	Branches                   `yaml:"branches"`
 	Tags                       `yaml:"tags"`
 	Messages                   `yaml:"messages"`
-	SyncLabels                 []string `yaml:"syncLabels" valid:"required"`
+	SyncLabels                 []string `valid:"required"      yaml:"syncLabels"`
 }
 
 // ResyncReleases holds configuration for resyncing past releases.
@@ -22,33 +22,33 @@ type ResyncReleases struct {
 // Tags holds configuration for tags.
 type Tags struct {
 	Synchronize bool   `yaml:"synchronize"`
-	RefSpec     string `yaml:"refSpec" valid:"required"`
+	RefSpec     string `valid:"required"   yaml:"refSpec"`
 }
 
 // Messages holds messages that are used to commit changes and create PRs.
 type Messages struct {
-	TriggerCI      string `yaml:"triggerCi" valid:"required"`
-	TriggerCIBody  string `yaml:"triggerCiBody" valid:"required"`
-	ApplyForkFiles string `yaml:"applyForkFiles" valid:"required"`
+	TriggerCI      string `valid:"required" yaml:"triggerCi"`
+	TriggerCIBody  string `valid:"required" yaml:"triggerCiBody"`
+	ApplyForkFiles string `valid:"required" yaml:"applyForkFiles"`
 }
 
 // Branches holds configuration for branches.
 type Branches struct {
-	Main             string `yaml:"main" valid:"required"`
-	ReleaseNext      string `yaml:"releaseNext" valid:"required"`
-	SynchCI          string `yaml:"synchCi" valid:"required"`
+	Main             string `valid:"required"        yaml:"main"`
+	ReleaseNext      string `valid:"required"        yaml:"releaseNext"`
+	SynchCI          string `valid:"required"        yaml:"synchCi"`
 	ReleaseTemplates `yaml:"releaseTemplates"`
 	Searches         `yaml:"searches"`
 }
 
 // ReleaseTemplates contains templates for release names.
 type ReleaseTemplates struct {
-	Upstream   string `yaml:"upstream" valid:"required"`
-	Downstream string `yaml:"downstream" valid:"required"`
+	Upstream   string `valid:"required" yaml:"upstream"`
+	Downstream string `valid:"required" yaml:"downstream"`
 }
 
 // Searches contains regular expressions used to search for branches.
 type Searches struct {
-	UpstreamReleases   string `yaml:"upstreamReleases" valid:"required"`
-	DownstreamReleases string `yaml:"downstreamReleases" valid:"required"`
+	UpstreamReleases   string `valid:"required" yaml:"upstreamReleases"`
+	DownstreamReleases string `valid:"required" yaml:"downstreamReleases"`
 }

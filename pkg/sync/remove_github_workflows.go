@@ -1,7 +1,6 @@
 package sync
 
 import (
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -13,7 +12,7 @@ func (o Operation) removeGithubWorkflows() error {
 	o.Println("- Remove upstream Github workflows")
 	workflows := path.Join(o.State.Project.Path, ".github", "workflows")
 
-	dir, err := ioutil.ReadDir(workflows)
+	dir, err := os.ReadDir(workflows)
 	if err != nil {
 		return errors.Wrap(err, ErrSyncFailed)
 	}

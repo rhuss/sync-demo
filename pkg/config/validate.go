@@ -9,7 +9,7 @@ import (
 func (c Config) validate() error {
 	ok, err := valid.ValidateStruct(c)
 	if !ok {
-		return fmt.Errorf("%w: %v", ErrConfigFileHaveInvalidFormat, err)
+		return fmt.Errorf("%w: %w", ErrConfigFileHaveInvalidFormat, err)
 	}
 	return nil
 }

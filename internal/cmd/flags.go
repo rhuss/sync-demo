@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"path"
 
@@ -18,5 +17,5 @@ func addFlags(root *cobra.Command, opts *cli.Options) {
 	}
 	config := path.Join(wd, ".deviate.yaml")
 	fl.StringVar(&opts.ConfigPath, "config", config,
-		fmt.Sprintf("%s configuration file", metadata.Name))
+		metadata.Name+" configuration file")
 }

@@ -83,7 +83,7 @@ func (o onGoingCheckout) As(branch string) error {
 
 func (o onGoingCheckout) OntoWorkspace() error {
 	coOpts := &gitv5.CloneOptions{
-		URL:           fmt.Sprintf("file://%s", o.repo.Project.Path),
+		URL:           "file://" + o.repo.Project.Path,
 		ReferenceName: plumbing.NewBranchReferenceName(o.branch),
 		SingleBranch:  true,
 		Depth:         1,

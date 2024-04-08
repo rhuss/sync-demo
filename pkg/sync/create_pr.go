@@ -70,7 +70,7 @@ func (c createPR) active() (*string, error) {
 		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
 	un := make([]map[string]interface{}, 0)
-	err = json.Unmarshal(buff.Bytes(), &un)
+	err = json.Unmarshal(buff, &un)
 	if err != nil {
 		return nil, errors.Wrap(err, ErrSyncFailed)
 	}
@@ -101,7 +101,7 @@ func (c createPR) open() error {
 	cl := github.NewClient(args...)
 	cl.ProjectDir = c.Project.Path
 	buff, err := cl.Execute(c.Context)
-	defer c.Println("Github client:", buff.String())
+	defer c.Println("Github client:", buff)
 	return errors.Wrap(err, ErrSyncFailed)
 }
 

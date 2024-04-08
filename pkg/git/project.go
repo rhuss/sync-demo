@@ -24,7 +24,8 @@ var (
 func NewProject(project config.Project, state state.State) (Project, error) {
 	r, err := gitv5.PlainOpen(project.Path)
 	if err != nil {
-		return Project{}, fmt.Errorf("%s - %w: %v", project.Path, ErrNotGitRepo, err)
+		return Project{}, fmt.Errorf("%s - %w: %w",
+			project.Path, ErrNotGitRepo, err)
 	}
 	return Project{
 		Project: project,

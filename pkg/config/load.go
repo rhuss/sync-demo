@@ -24,12 +24,12 @@ func (c *Config) load(
 ) error {
 	bytes, err := os.ReadFile(project.ConfigPath)
 	if err != nil {
-		return fmt.Errorf("%s - %w: %v", project.ConfigPath,
+		return fmt.Errorf("%s - %w: %w", project.ConfigPath,
 			ErrConfigFileCantBeRead, err)
 	}
 	err = yaml.Unmarshal(bytes, c)
 	if err != nil {
-		return fmt.Errorf("%s - %w: %v", project.ConfigPath,
+		return fmt.Errorf("%s - %w: %w", project.ConfigPath,
 			ErrConfigFileHaveInvalidFormat, err)
 	}
 

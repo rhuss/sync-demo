@@ -9,7 +9,7 @@ import (
 func Wrap(err error, wrapper error) error {
 	if err != nil {
 		if !errors.Is(err, wrapper) {
-			return fmt.Errorf("%w: %v", wrapper, err)
+			return fmt.Errorf("%w: %w", wrapper, err)
 		}
 		return err
 	}
@@ -23,5 +23,5 @@ func Is(err, target error) bool {
 
 // New returns an error that formats as the given text.
 func New(text string) error {
-	return errors.New(text) // nolint:goerr113
+	return errors.New(text) //nolint:goerr113
 }

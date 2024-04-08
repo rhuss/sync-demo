@@ -4,7 +4,7 @@ package config
 func newDefaults() Config {
 	const (
 		releaseTemplate = "release-{{ .Major }}.{{ .Minor }}"
-		releaseSearch   = `release-(\d+)\.(\d+)`
+		releaseSearch   = `^release-(\d+)\.(\d+)$`
 	)
 	return Config{
 		GithubWorkflowsRemovalGlob: "knative-*.y?ml",

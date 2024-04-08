@@ -8,7 +8,7 @@ import (
 	"github.com/cardil/deviate/pkg/errors"
 	pkgfiles "github.com/cardil/deviate/pkg/files"
 	"github.com/cardil/deviate/pkg/log/color"
-	"github.com/magefile/mage/sh"
+	"github.com/cardil/deviate/pkg/sh"
 )
 
 func (o Operation) applyPatches() error {
@@ -29,7 +29,7 @@ func (o Operation) applyPatches() error {
 
 		// TODO: Consider rewriting this to Go native code instead shell invocation.
 		err = pkgfiles.WithinDirectory(o.Project.Path, func() error {
-			return errors.Wrap(sh.RunV("git", "apply", filePath),
+			return errors.Wrap(sh.Run("git", "apply", filePath),
 				ErrSyncFailed)
 		})
 		if err != nil {

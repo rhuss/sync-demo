@@ -2,7 +2,7 @@ package sync
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path"
 	"time"
 
@@ -49,6 +49,6 @@ func (c triggerCI) addChange() error {
 	filePath := path.Join(c.Project.Path, "ci")
 	content := time.Now().Format(time.RFC3339)
 	const fileReadableToOwnerPerm = 0o600
-	err := ioutil.WriteFile(filePath, []byte(content), fileReadableToOwnerPerm)
+	err := os.WriteFile(filePath, []byte(content), fileReadableToOwnerPerm)
 	return errors.Wrap(err, ErrSyncFailed)
 }

@@ -25,6 +25,9 @@ linters:
     - maligned
     - interfacer
     - golint
+    - exhaustruct
+    - containedctx
+    - depguard
 
 issues:
   exclude-rules:

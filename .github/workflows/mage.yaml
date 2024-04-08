@@ -2,34 +2,33 @@ name: Mage
 
 on:
   push:
-    tags:
-      - v*
-    branches: [ 'main', 'master', 'release-*' ]
+    branches: [ 'main', 'master','release-*' ]
   pull_request:
     types: [opened, synchronize, reopened]
+
+env:
+  FORCE_COLOR: true
 
 jobs:
 
   build:
-    name: Build
+    name: Go
     runs-on: ubuntu-latest
     strategy:
       matrix:
         go-version:
-          - '1.17'
-          - '1.16'
+          - '1.22'
+          - '1.21'
     steps:
 
       - name: Set up Go ${{ matrix.go-version }}
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go-version }}
         id: go
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Build & Test
+      - name: Run mage
         run: ./mage
-        env:
-          FORCE_COLOR: true

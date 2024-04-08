@@ -16,6 +16,7 @@ import (
 )
 
 // Default target is set to binary.
+//
 //goland:noinspection GoUnusedGlobalVariable
 var Default = magetasks.Build // nolint:deadcode,gochecknoglobals
 
@@ -31,6 +32,12 @@ func init() { //nolint:gochecknoinits
 			Resolver: git.NewVersionResolver(),
 		},
 		Artifacts: []config.Artifact{bin},
-		Checks:    []config.Task{checks.GolangCiLint()},
+		Checks:    []config.Task{checks.GolangCiLint(withVersion("v1.57.2"))},
 	})
+}
+
+func withVersion(v string) checks.GolangCiLintParam {
+	return func(opts *checks.GolangCiLintOptions) {
+		opts.Version = v
+	}
 }
