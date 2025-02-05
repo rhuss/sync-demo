@@ -5,10 +5,10 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cardil/deviate/pkg/errors"
-	pkgfiles "github.com/cardil/deviate/pkg/files"
-	"github.com/cardil/deviate/pkg/log/color"
-	"github.com/cardil/deviate/pkg/sh"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	pkgfiles "github.com/openshift-knative/deviate/pkg/files"
+	"github.com/openshift-knative/deviate/pkg/log/color"
+	"github.com/openshift-knative/deviate/pkg/sh"
 )
 
 func (o Operation) applyPatches() error {

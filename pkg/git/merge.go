@@ -3,12 +3,12 @@ package git
 import (
 	"fmt"
 
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
-	pkgfiles "github.com/cardil/deviate/pkg/files"
-	"github.com/cardil/deviate/pkg/sh"
 	gitv5 "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	pkgfiles "github.com/openshift-knative/deviate/pkg/files"
+	"github.com/openshift-knative/deviate/pkg/sh"
 )
 
 func (r Repository) Merge(remote *git.Remote, branch string) error {

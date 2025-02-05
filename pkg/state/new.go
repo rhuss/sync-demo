@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/cardil/deviate/pkg/log"
+	"github.com/openshift-knative/deviate/pkg/log"
 )
 
 func New(log log.Logger) State {

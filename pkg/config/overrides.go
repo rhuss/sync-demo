@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/cardil/deviate/pkg/errors"
 	"github.com/kelseyhightower/envconfig"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 func (c *Config) overrides() error {

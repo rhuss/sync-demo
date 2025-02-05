@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cardil/deviate/pkg/errors"
-	"github.com/cardil/deviate/pkg/git"
-	"github.com/cardil/deviate/pkg/github"
-	"github.com/cardil/deviate/pkg/log/color"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/git"
+	"github.com/openshift-knative/deviate/pkg/github"
+	"github.com/openshift-knative/deviate/pkg/log/color"
 )
 
 func (o Operation) createSyncReleaseNextPR() error {

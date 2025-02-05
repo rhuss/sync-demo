@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cardil/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 var (

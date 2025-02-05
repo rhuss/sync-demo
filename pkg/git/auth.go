@@ -1,11 +1,11 @@
 package git
 
 import (
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
-	"github.com/cardil/deviate/pkg/url"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/mitchellh/go-homedir"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/url"
 	sshagent "github.com/xanzy/ssh-agent"
 )
 

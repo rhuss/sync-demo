@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/log"
-	"github.com/cardil/deviate/pkg/log/color"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/log"
+	"github.com/openshift-knative/deviate/pkg/log/color"
 )
 
 func (c *Config) loadFromGit(

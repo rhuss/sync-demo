@@ -1,12 +1,12 @@
 package sync
 
 import (
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
-	"github.com/cardil/deviate/pkg/log/color"
-	"github.com/cardil/deviate/pkg/state"
 	gitv5 "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/log/color"
+	"github.com/openshift-knative/deviate/pkg/state"
 )
 
 // ErrSyncFailed when the sync failed.

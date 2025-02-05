@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/cardil/deviate/internal/cmd"
-	"github.com/cardil/deviate/pkg/metadata"
+	"github.com/openshift-knative/deviate/internal/cmd"
+	"github.com/openshift-knative/deviate/pkg/metadata"
 	"github.com/spf13/cobra"
 	"gotest.tools/v3/assert"
 )

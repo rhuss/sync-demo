@@ -8,7 +8,7 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/wavesoftware/go-magetasks/entrypoint"
+	"knative.dev/toolbox/magetasks/entrypoint"
 )
 
 func main() {

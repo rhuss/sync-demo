@@ -8,14 +8,14 @@ import (
 	"os"
 	"path"
 
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
 	"github.com/go-git/go-billy/v5"
 	"github.com/go-git/go-billy/v5/memfs"
 	gitv5 "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/storage/memory"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 func (r Repository) Checkout(remote git.Remote, branch string) git.Checkout { //nolint:ireturn

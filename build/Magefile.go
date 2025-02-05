@@ -4,15 +4,15 @@
 package main
 
 import (
-	"github.com/cardil/deviate/pkg/metadata"
+	"github.com/openshift-knative/deviate/pkg/metadata"
 
 	// mage:import
-	"github.com/wavesoftware/go-magetasks"
-	"github.com/wavesoftware/go-magetasks/config"
-	"github.com/wavesoftware/go-magetasks/pkg/artifact"
-	"github.com/wavesoftware/go-magetasks/pkg/artifact/platform"
-	"github.com/wavesoftware/go-magetasks/pkg/checks"
-	"github.com/wavesoftware/go-magetasks/pkg/git"
+	"knative.dev/toolbox/magetasks"
+	"knative.dev/toolbox/magetasks/config"
+	"knative.dev/toolbox/magetasks/pkg/artifact"
+	"knative.dev/toolbox/magetasks/pkg/artifact/platform"
+	"knative.dev/toolbox/magetasks/pkg/checks"
+	"knative.dev/toolbox/magetasks/pkg/git"
 )
 
 // Default target is set to binary.

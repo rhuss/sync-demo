@@ -1,12 +1,12 @@
 package git
 
 import (
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
 	gitv5 "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/storage/memory"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 func (r Repository) ListRemote(remote git.Remote) ([]*plumbing.Reference, error) {

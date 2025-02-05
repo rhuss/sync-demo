@@ -4,11 +4,11 @@ import (
 	"context"
 	"os"
 
-	"github.com/cardil/deviate/pkg/errors"
-	"github.com/cardil/deviate/pkg/files"
-	"github.com/cardil/deviate/pkg/metadata"
 	"github.com/cli/cli/v2/pkg/cmd/factory"
 	ghroot "github.com/cli/cli/v2/pkg/cmd/root"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/files"
+	"github.com/openshift-knative/deviate/pkg/metadata"
 )
 
 // ErrClientFailed when client operations has failed.

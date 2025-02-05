@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/cardil/deviate/internal/cmd"
+	"github.com/openshift-knative/deviate/internal/cmd"
 )
 
 var (

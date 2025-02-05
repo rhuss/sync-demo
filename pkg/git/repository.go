@@ -3,8 +3,8 @@ package git
 import (
 	"context"
 
-	"github.com/cardil/deviate/pkg/config"
 	gitv5 "github.com/go-git/go-git/v5"
+	"github.com/openshift-knative/deviate/pkg/config"
 )
 
 // Repository is an implementation of git repository using Golang library.

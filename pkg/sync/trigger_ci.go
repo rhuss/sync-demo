@@ -6,8 +6,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 func (o Operation) triggerCI() error {

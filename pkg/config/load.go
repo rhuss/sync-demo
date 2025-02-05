@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/log"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/log"
 	"gopkg.in/yaml.v3"
 )
 

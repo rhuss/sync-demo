@@ -5,7 +5,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/cardil/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 func (o Operation) removeGithubWorkflows() error {

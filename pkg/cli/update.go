@@ -3,13 +3,13 @@ package cli
 import (
 	"errors"
 
-	"github.com/cardil/deviate/pkg/config"
-	pkgerrors "github.com/cardil/deviate/pkg/errors"
-	"github.com/cardil/deviate/pkg/git"
-	"github.com/cardil/deviate/pkg/log"
-	"github.com/cardil/deviate/pkg/log/color"
-	"github.com/cardil/deviate/pkg/state"
-	"github.com/cardil/deviate/pkg/sync"
+	"github.com/openshift-knative/deviate/pkg/config"
+	pkgerrors "github.com/openshift-knative/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/git"
+	"github.com/openshift-knative/deviate/pkg/log"
+	"github.com/openshift-knative/deviate/pkg/log/color"
+	"github.com/openshift-knative/deviate/pkg/state"
+	"github.com/openshift-knative/deviate/pkg/sync"
 )
 
 // ErrConfigurationIsInvalid when configuration is invalid.

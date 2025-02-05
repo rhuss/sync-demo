@@ -3,7 +3,7 @@ package files
 import (
 	"os"
 
-	"github.com/cardil/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/errors"
 )
 
 // ErrCannotChangeDirectory when cannot change directory.

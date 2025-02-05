@@ -3,7 +3,7 @@ package metadata_test
 import (
 	"testing"
 
-	"github.com/cardil/deviate/pkg/metadata"
+	"github.com/openshift-knative/deviate/pkg/metadata"
 	"gotest.tools/v3/assert"
 )
 

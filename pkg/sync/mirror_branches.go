@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/cardil/deviate/pkg/config/git"
-	"github.com/cardil/deviate/pkg/errors"
-	"github.com/cardil/deviate/pkg/log/color"
+	"github.com/openshift-knative/deviate/pkg/config/git"
+	"github.com/openshift-knative/deviate/pkg/errors"
+	"github.com/openshift-knative/deviate/pkg/log/color"
 )
 
 func (o Operation) mirrorReleases() error {

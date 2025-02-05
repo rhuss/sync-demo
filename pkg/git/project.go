@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cardil/deviate/pkg/config"
-	"github.com/cardil/deviate/pkg/state"
 	gitv5 "github.com/go-git/go-git/v5"
+	"github.com/openshift-knative/deviate/pkg/config"
+	"github.com/openshift-knative/deviate/pkg/state"
 )
 
 var (

@@ -4,14 +4,13 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/cardil/deviate/pkg/git"
+	"github.com/openshift-knative/deviate/pkg/git"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
 )
 
 func TestParseAddress(t *testing.T) {
-	for _, iter := range parseAddressTestCases(t) {
-		tc := iter
+	for _, tc := range parseAddressTestCases(t) {
 		t.Run(tc.address, func(t *testing.T) {
 			got, gotErr := git.ParseAddress(tc.address)
 			if tc.wantErr != nil && !errors.Is(gotErr, tc.wantErr) {

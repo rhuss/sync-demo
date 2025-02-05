@@ -3,8 +3,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/cardil/deviate/pkg/cli"
-	"github.com/cardil/deviate/pkg/metadata"
+	"github.com/openshift-knative/deviate/pkg/cli"
+	"github.com/openshift-knative/deviate/pkg/metadata"
 	"github.com/spf13/cobra"
 )
 
