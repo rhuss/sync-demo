@@ -1,7 +1,9 @@
 package config
 
+import "github.com/openshift-knative/hack/pkg/dockerfilegen"
+
 // newDefaults creates a new default configuration.
-func newDefaults() Config {
+func newDefaults(project Project) Config {
 	const (
 		releaseTemplate = "release-{{ .Major }}.{{ .Minor }}"
 		releaseSearch   = `^release-(\d+)\.(\d+)$`
@@ -33,8 +35,10 @@ func newDefaults() Config {
 			TriggerCIBody: "This automated PR is to make sure the " +
 				"forked project's `%s` branch (forked upstream's `%s` branch) passes" +
 				" a CI.",
-			ApplyForkFiles: ":open_file_folder: Apply fork specific files",
+			ApplyForkFiles:  ":open_file_folder: Apply fork specific files",
+			ImagesGenerated: ":vhs: Images generated",
 		},
-		SyncLabels: []string{"kind/sync-fork-to-upstream"},
+		SyncLabels:    []string{"kind/sync-fork-to-upstream"},
+		DockerfileGen: dockerfilegen.DefaultParams(project.Path),
 	}
 }
