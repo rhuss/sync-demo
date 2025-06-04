@@ -32,7 +32,7 @@ branches:
   # It usually tracks the main development line of the upstream (e.g., upstream/main).
   # Deviate will determine the actual version (e.g., "release-1.23") based on upstream tags/branches.
   # Fork-specific patches are continuously applied to this line.
-  releaseNext: "release-"
+  releaseNext: "release-next"
   # Branch prefix for CI trigger branches (e.g., "sync-ci-release-1.23")
   synchCi: "sync-ci-"
   releaseTemplates:
