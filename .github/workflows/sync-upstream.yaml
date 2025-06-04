@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Fork
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0 # Fetch all history for all tags and branches
 
       - name: Set up Go
@@ -35,4 +35,4 @@ jobs:
       - name: Run deviate sync
         run: deviate sync --config .deviate.yaml
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
