@@ -32,7 +32,7 @@ branches:
   # Fork-specific patches are continuously applied to this line.
   releaseNext: "release-next"
   # Branch prefix for CI trigger branches (e.g., "sync-ci-release-1.23")
-  synchCi: "sync-ci-"
+  # synchCi: "sync-ci-"
   releaseTemplates:
     # Go template for identifying/naming upstream release branches. {{ .Version }} is available.
     upstream: "release-{{ .Version }}"
