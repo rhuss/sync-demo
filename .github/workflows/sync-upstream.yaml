@@ -25,7 +25,7 @@ jobs:
         uses: dev-hanz-ops/install-gh-cli-action@v0.2.1
 
       - name: Install deviate
-        run: go install github.com/openshift-knative/deviate/cmd/deviate@latest # Or pin to a specific version
+        run: go install github.com/rhuss/deviate/cmd/deviate@pr/add-gh-token-support # Or pin to a specific version
 
       - name: Configure Git User
         run: |
