@@ -1,0 +1,57 @@
+# Upstream repository URL (e.g., git@github.com:upstream/project.git)
+upstream: "https://github.com/llamastack/llama-stack-k8s-operator"
+# Downstream repository URL (your fork, e.g., git@github.com:your-org/project-fork.git)
+downstream: "https://github.com/rhuss/sync-demo.git"
+
+# Set to true to simulate changes without pushing or creating PRs
+dryRun: false
+
+# Glob pattern for GitHub workflow files to remove (e.g., from upstream)
+# githubWorkflowsRemovalGlob: ".github/workflows/upstream-ci-*.yaml"
+
+# Labels to apply to Pull Requests created by deviate
+syncLabels:
+  - "upstream/sync"
+
+# Optional: Configuration for Dockerfile generation
+# Uses github.com/openshift-knative/hack/pkg/dockerfilegen
+# dockerfileGen:
+ # enabled: false
+  # ... other dockerfilegen params
+
+# Configuration for re-syncing a certain number of past releases from upstream
+resyncReleases:
+  enabled: true # Set to true to enable resyncing past releases
+  numberOf: 3   # Number of past releases to resync if enabled
+
+branches:
+  # Main/default branch in your fork. Patches are typically applied here continuously.
+  # This branch is often used as the base for `releaseNext`.
+  main: "main"
+  # `releaseNext` defines the pattern for the rolling "next release" branch in your fork.
+  # It usually tracks the main development line of the upstream (e.g., upstream/main).
+  # Deviate will determine the actual version (e.g., "release-1.23") based on upstream tags/branches.
+  # Fork-specific patches are continuously applied to this line.
+  releaseNext: "release-"
+  # Branch prefix for CI trigger branches (e.g., "sync-ci-release-1.23")
+  synchCi: "sync-ci-"
+  releaseTemplates:
+    # Go template for identifying/naming upstream release branches. {{ .Version }} is available.
+    upstream: "release-{{ .Version }}"
+    # Go template for naming downstream (fork) release branches. {{ .Version }} is available.
+    downstream: "release-{{ .Version }}"
+  searches:
+    # Regex to find upstream release branches. Needs a `Version` capture group.
+    upstreamReleases: '^release-(?P<Version>\d+\.\d+)$'
+    # Regex to find downstream release branches. Needs a `Version` capture group.
+    downstreamReleases: '^release-(?P<Version>\d+\.\d+)$'
+
+tags:
+  synchronize: true
+  refSpec: "v*" # Example: sync all tags starting with 'v'
+
+messages:
+  triggerCi: "chore(sync): Trigger CI for {{ .ReleaseBranch }} into {{ .MainBranch }}"
+  triggerCiBody: "Automated PR to trigger CI for syncing `{{ .ReleaseBranch }}` into `{{ .MainBranch }}`."
+  applyForkFiles: "chore: Apply fork-specific files and patches"
+  imagesGenerated: "chore: Generate images"

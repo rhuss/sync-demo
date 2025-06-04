@@ -1,0 +1,38 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    # Example: Run at 3 AM UTC every day
+    - cron: '0 3 * * *'
+  workflow_dispatch: {} # Allows manual triggering
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Fork
+        uses: actions/checkout@v4
+        with:
+          # token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # Fetch all history for all tags and branches
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21' # Adjust to your project's Go version
+
+      - name: Install gh CLI
+        uses: dev-hanz-ops/install-gh-cli-action@v0.2.1
+
+      - name: Install deviate
+        run: go install github.com/openshift-knative/deviate/cmd/deviate@latest # Or pin to a specific version
+
+      - name: Configure Git User
+        run: |
+          git config --global user.email "your-bot-email@example.com"
+          git config --global user.name "Your Bot Name"
+
+      - name: Run deviate sync
+        run: deviate sync
+        # env:
+          # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
