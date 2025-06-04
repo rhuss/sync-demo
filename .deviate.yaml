@@ -1,7 +1,5 @@
 # Upstream repository URL (e.g., git@github.com:upstream/project.git)
 upstream: "https://github.com/llamastack/llama-stack-k8s-operator"
-# Downstream repository URL (your fork, e.g., git@github.com:your-org/project-fork.git)
-downstream: "https://github.com/rhuss/sync-demo.git"
 
 # Set to true to simulate changes without pushing or creating PRs
 dryRun: false
